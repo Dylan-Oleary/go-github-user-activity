@@ -8,10 +8,6 @@ import (
 	"os"
 )
 
-type github_response struct {
-	id string
-}
-
 func main() {
 	// Get the CLI arguments
 	args := os.Args[1:]
@@ -26,7 +22,7 @@ func main() {
 	fmt.Println("Username: ", username)
 
 	// Fetch Data from GitHub – https://api.github.com/users/<username>/events
-	response, err := http.Get(builtGitHubUrl(username))
+	response, err := http.Get(buildGitHubUrl(username))
 
 	if err != nil {
 		fmt.Println("Error: ", err)
@@ -42,24 +38,72 @@ func main() {
 	}
 
 	// Parse the response
-	var result []map[string]interface{}
-	json.Unmarshal(body, &result)
-
-	fmt.Println(result)
-
-	for i := 0; i < len(result); i++ {
-		fmt.Println(result[i])
-		fmt.Println()
-	}
+	githubEvents := []GitHubEvent{}
+	json.Unmarshal(body, &githubEvents)
 
 	// Print the output. Example:
-	//  Output:
-	// - Pushed 3 commits to kamranahmedse/developer-roadmap
-	// - Opened a new issue in kamranahmedse/developer-roadmap
-	// - Starred kamranahmedse/developer-roadmap
-	// - ...
-}
+	fmt.Println("Output:")
 
-func builtGitHubUrl(username string) string {
-	return "https://api.github.com/users/" + username + "/events"
+	for i := 0; i < len(githubEvents); i++ {
+		event := githubEvents[i]
+
+		switch event.EventType {
+		case "CommitCommentEvent":
+			fmt.Println("CommitCommentEvent")
+			break
+		case "CreateEvent":
+			fmt.Println("CreateEvent")
+			break
+		case "DeleteEvent":
+			fmt.Println("DeleteEvent")
+			break
+		case "ForkEvent":
+			fmt.Println("ForkEvent")
+			break
+		case "GollumEvent":
+			fmt.Println("GollumEvent")
+			break
+		case "IssueCommentEvent":
+			fmt.Println("IssueCommentEvent")
+			break
+		case "IssuesEvent":
+			fmt.Println("IssuesEvent")
+			break
+		case "MemberEvent":
+			fmt.Println("MemberEvent")
+			break
+		case "PublicEvent":
+			fmt.Println("PublicEvent")
+			break
+		case "PullRequestEvent":
+			fmt.Println("PullRequestEvent")
+			break
+		case "PullRequestReviewEvent":
+			fmt.Println("PullRequestReviewEvent")
+			break
+		case "PullRequestReviewCommentEvent":
+			fmt.Println("PullRequestReviewCommentEvent")
+			break
+		case "PullRequestReviewThreadEvent":
+			fmt.Println("PullRequestReviewThreadEvent")
+			break
+		case "PushEvent":
+			fmt.Println("PushEvent")
+			break
+		case "ReleaseEvent":
+			fmt.Println("ReleaseEvent")
+			break
+		case "SponsorshipEvent":
+			fmt.Println("SponsorshipEvent")
+			break
+		case "WatchEvent":
+			fmt.Println("WatchEvent")
+			break
+		}
+	}
+	//  Output:
+	// - Pushed 3 commits to dylan-oleary/developer-roadmap
+	// - Opened a new issue in dylan-oleary/developer-roadmap
+	// - Starred dylan-oleary/developer-roadmap
+	// - ...
 }

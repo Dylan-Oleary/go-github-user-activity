@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "go.formatTool": "goimports",
+  "[go]": {
+    "editor.formatOnSave": true
+  },
+  "[go.mod]": {
+    "editor.formatOnSave": true
+  }
+}
